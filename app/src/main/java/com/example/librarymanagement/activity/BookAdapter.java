@@ -18,7 +18,7 @@ import java.util.List;
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder> {
 
-    private List<Book> bookList;
+    private final List<Book> bookList;
 
     public BookAdapter(List<Book> bookList) {
         this.bookList = bookList;
@@ -51,7 +51,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         return bookList.size();
     }
 
-    public class BookViewHolder extends RecyclerView.ViewHolder {
+    public static class BookViewHolder extends RecyclerView.ViewHolder {
         ImageView bookImageView;
         TextView bookNameTextView;
         TextView authorTextView;

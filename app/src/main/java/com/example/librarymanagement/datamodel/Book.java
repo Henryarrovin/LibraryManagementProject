@@ -6,22 +6,39 @@ public class Book {
     private String bookName;
     private String category;
     private String image;
+    private String id;
 
-    public Book() {
-    }
-
-    public Book(String author, boolean available, String bookName, String category, String image) {
+    public Book(String author, boolean available, String bookName, String category, String image, String id) {
         this.author = author;
         this.available = available;
         this.bookName = bookName;
         this.category = category;
         this.image = image;
+        this.id = id;
+    }
+
+    public Book() {
     }
 
     public Book(String bookName, String author, String image) {
         this.bookName = bookName;
         this.author = author;
         this.image = image;
+    }
+
+    public Book(String bookName, String author, String image, boolean available) {
+        this.bookName = bookName;
+        this.author = author;
+        this.image = image;
+        this.available =available;
+    }
+
+    public Book(String id, String bookName, String author, String image, boolean available) {
+        this.id = id;
+        this.bookName = bookName;
+        this.author = author;
+        this.image = image;
+        this.available =available;
     }
 
     public String getAuthor() {
@@ -62,5 +79,13 @@ public class Book {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
