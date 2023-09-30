@@ -2,11 +2,13 @@ package com.example.librarymanagement.activity;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +40,7 @@ public class HomeActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private BookAdapter bookAdapter;
     private List<Book> bookList;
+    private Button logoutButton;
     private FirebaseFirestore db;
     private FirebaseAuth auth;
 
@@ -59,14 +62,23 @@ public class HomeActivity extends AppCompatActivity {
         bookAdapter = new BookAdapter(bookList);
         recyclerView.setAdapter(bookAdapter);
 
-        // Set item click listener on RecyclerView
+        logoutButton  = findViewById(R.id.logoutButton);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                auth.signOut();
+                Intent intent = new Intent(HomeActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                // Get the clicked book
                 Book clickedBook = bookList.get(position);
 
-                // Show the book details overlay
                 showBookDetailsOverlay(clickedBook);
             }
         }));
@@ -111,6 +123,7 @@ public class HomeActivity extends AppCompatActivity {
         TextView bookNameTextView = dialogView.findViewById(R.id.bookNameTextView);
         Button rentButton = dialogView.findViewById(R.id.rentButton);
 
+
         authorTextView.setText("Author: " + book.getAuthor());
         availabilityTextView.setText("Availability: " + (book.isAvailable() ? "Available" : "Rented"));
         bookNameTextView.setText("Book Name: " + book.getBookName());
@@ -124,6 +137,7 @@ public class HomeActivity extends AppCompatActivity {
                     if (auth.getCurrentUser() != null) {
                         String bookId = book.getId();
                         DocumentReference bookRef = db.collection("Books").document(bookId);
+
 
                         bookRef
                                 .update("available", false)
@@ -142,7 +156,6 @@ public class HomeActivity extends AppCompatActivity {
                                 .addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        // Handle errors if the update fails
                                         Log.e("FirestoreError", "Error updating book availability: " + e.getMessage());
                                     }
                                 });
@@ -160,4 +173,6 @@ public class HomeActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+
 }

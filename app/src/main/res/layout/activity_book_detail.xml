@@ -40,4 +40,5 @@
         android:text="Rent"
         android:layout_below="@id/bookNameTextView"
         android:layout_marginTop="16dp"/>
+
 </RelativeLayout>
