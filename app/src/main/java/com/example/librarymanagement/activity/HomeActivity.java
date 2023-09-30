@@ -39,23 +39,20 @@ public class HomeActivity extends AppCompatActivity {
     private BookAdapter bookAdapter;
     private List<Book> bookList;
     private FirebaseFirestore db;
-    private FirebaseAuth auth; // Firebase Authentication
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        // Initialize Firebase Firestore
         db = FirebaseFirestore.getInstance();
-        auth = FirebaseAuth.getInstance(); // Initialize Firebase Authentication
+        auth = FirebaseAuth.getInstance();
 
-        // Set up the toolbar (app bar)
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Books"); // Set the title
+        getSupportActionBar().setTitle("Books");
 
-        // Initialize RecyclerView and its adapter
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         bookList = new ArrayList<>();
@@ -74,12 +71,10 @@ public class HomeActivity extends AppCompatActivity {
             }
         }));
 
-        // Load data from Firestore
         loadDataFromFirestore();
     }
 
     private void loadDataFromFirestore() {
-        // Replace "Books" with the actual name of your Firestore collection
         db.collection("Books")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -88,19 +83,16 @@ public class HomeActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                // Parse the book data
                                 String author = document.getString("author");
                                 String bookName = document.getString("bookName");
                                 String image = document.getString("image"); // Assuming image is stored as Base64
                                 boolean available = document.getBoolean("available");
 
-                                // Create a book object with image
                                 Book book = new Book(document.getId(), bookName, author, image, available);
                                 bookList.add(book);
                             }
-                            bookAdapter.notifyDataSetChanged(); // Refresh the RecyclerView
+                            bookAdapter.notifyDataSetChanged();
                         } else {
-                            // Handle errors here
                             Log.e("FirestoreError", "Error fetching data: " + task.getException());
                         }
                     }
@@ -114,44 +106,33 @@ public class HomeActivity extends AppCompatActivity {
         View dialogView = inflater.inflate(R.layout.activity_book_detail, null);
         builder.setView(dialogView);
 
-        // Find views in the dialog layout
         TextView authorTextView = dialogView.findViewById(R.id.authorTextView);
         TextView availabilityTextView = dialogView.findViewById(R.id.availabilityTextView);
         TextView bookNameTextView = dialogView.findViewById(R.id.bookNameTextView);
         Button rentButton = dialogView.findViewById(R.id.rentButton);
 
-        // Set book details in the dialog
         authorTextView.setText("Author: " + book.getAuthor());
         availabilityTextView.setText("Availability: " + (book.isAvailable() ? "Available" : "Rented"));
         bookNameTextView.setText("Book Name: " + book.getBookName());
 
-        // Set button text and click listener based on availability
         if (book.isAvailable()) {
             rentButton.setText("Rent");
 
             rentButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Perform the rent action here
-                    // Check if the user is authenticated
                     if (auth.getCurrentUser() != null) {
-                        // Update book availability in Firestore
-                        String bookId = book.getId(); // Assuming you have a unique ID for each book
+                        String bookId = book.getId();
                         DocumentReference bookRef = db.collection("Books").document(bookId);
 
-                        // Set the book's "available" field to false
-                        // Update book availability in Firestore
                         bookRef
                                 .update("available", false)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        // Book availability updated successfully
 
-                                        // Show a toast message indicating that the book has been rented
                                         Toast.makeText(HomeActivity.this, "Book rented successfully", Toast.LENGTH_SHORT).show();
 
-                                        // Update the book's availability locally
                                         book.setAvailable(false);
                                         availabilityTextView.setText("Availability: Rented");
                                         rentButton.setText("Rented");
@@ -167,8 +148,6 @@ public class HomeActivity extends AppCompatActivity {
                                 });
 
                     } else {
-                        // If the user is not authenticated, you can prompt them to log in
-                        // or take any other desired action
                         Toast.makeText(HomeActivity.this, "Please log in to rent a book", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -178,7 +157,6 @@ public class HomeActivity extends AppCompatActivity {
             rentButton.setEnabled(false);
         }
 
-        // Create and show the dialog
         AlertDialog dialog = builder.create();
         dialog.show();
     }

@@ -28,7 +28,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     @Override
     public BookViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_book, parent, false); // Create a layout file for individual book items
+                .inflate(R.layout.item_book, parent, false);
         return new BookViewHolder(view);
     }
 
@@ -36,11 +36,9 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     public void onBindViewHolder(@NonNull BookViewHolder holder, int position) {
         Book book = bookList.get(position);
 
-        // Bind book data to the views
         holder.bookNameTextView.setText(book.getBookName());
         holder.authorTextView.setText(book.getAuthor());
 
-        // Decode the Base64 image and set it to the ImageView
         byte[] decodedImage = Base64.decode(book.getImage(), Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(decodedImage, 0, decodedImage.length);
         holder.bookImageView.setImageBitmap(bitmap);

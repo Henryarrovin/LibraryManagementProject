@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
-    <!-- Author TextView -->
     <TextView
         android:id="@+id/authorTextView"
         android:layout_width="wrap_content"
@@ -14,7 +13,6 @@
         android:textStyle="bold"
         android:layout_marginTop="16dp"/>
 
-    <!-- Availability TextView -->
     <TextView
         android:id="@+id/availabilityTextView"
         android:layout_width="wrap_content"
@@ -25,7 +23,6 @@
         android:layout_below="@id/authorTextView"
         android:layout_marginTop="8dp"/>
 
-    <!-- Book Name TextView -->
     <TextView
         android:id="@+id/bookNameTextView"
         android:layout_width="wrap_content"
@@ -36,7 +33,6 @@
         android:layout_below="@id/availabilityTextView"
         android:layout_marginTop="8dp"/>
 
-    <!-- Rent Button -->
     <Button
         android:id="@+id/rentButton"
         android:layout_width="wrap_content"

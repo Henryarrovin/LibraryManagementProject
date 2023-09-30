@@ -4,7 +4,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <!-- ImageView for displaying the book image -->
     <ImageView
         android:id="@+id/bookImageView"
         android:layout_width="match_parent"
@@ -12,7 +11,6 @@
         android:scaleType="centerCrop"
         android:src="@drawable/placeholder_image" />
 
-    <!-- TextViews for displaying book name and author -->
     <TextView
         android:id="@+id/actualBookNameTextView"
         android:layout_width="wrap_content"

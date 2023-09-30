@@ -53,11 +53,9 @@ public class MainActivity extends AppCompatActivity {
                                     FirebaseUser user = firebaseAuth.getCurrentUser();
                                     Toast.makeText(MainActivity.this, "Authentication successful", Toast.LENGTH_SHORT).show();
 
-                                    // Redirect to a different activity upon successful login
                                     Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                                     startActivity(intent);
                                 } else {
-                                    // Sign-in failure
                                     Toast.makeText(MainActivity.this, "Authentication failed", Toast.LENGTH_SHORT).show();
                                 }
                             }
