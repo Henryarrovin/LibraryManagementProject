@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -97,7 +96,7 @@ public class HomeActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 String author = document.getString("author");
                                 String bookName = document.getString("bookName");
-                                String image = document.getString("image"); // Assuming image is stored as Base64
+                                String image = document.getString("image");
                                 boolean available = document.getBoolean("available");
 
                                 Book book = new Book(document.getId(), bookName, author, image, available);
